@@ -1,7 +1,5 @@
 ﻿using NinjaCore2.Domain.Models;
-using System;
 using System.Collections.Generic;
-using System.Text;
 
 namespace NinjaCore2.Data.Repositories
 {
