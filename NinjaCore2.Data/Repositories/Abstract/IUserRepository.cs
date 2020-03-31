@@ -1,7 +1,7 @@
-﻿using NinjaCore2.Domain.Models;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using NinjaCore2.Data.Entities;
 
-namespace NinjaCore2.Data.Repositories
+namespace NinjaCore2.Data.Repositories.Abstract
 {
     public interface IUserRepository
     {

@@ -1,9 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Collections.Generic;
 using Microsoft.AspNetCore.Mvc;
-using NinjaCore2.Data.Repositories;
-using NinjaCore2.Domain.Models;
+using NinjaCore2.Data.Entities;
+using NinjaCore2.Domain.Services.Abstract;
 
 namespace NinjaCore2.WebApi.Controllers
 {
@@ -11,32 +9,24 @@ namespace NinjaCore2.WebApi.Controllers
     [Route("api/[controller]")]
     public class UserController : Controller
     {
-        private readonly IUserRepository _repository;
+        private readonly IUserService _userService;
 
-        public UserController(IUserRepository repository)
+        public UserController(IUserService userService)
         {
-            _repository = repository;
-
-            if (!_repository.GetUserList().Any())
-            {
-                _repository.Create(new User { FirstName = "Tom", LastName = "Hunter", Email = "T.H1@email.com", BirthDate = new DateTime(2000, 6, 20) });
-                _repository.Create(new User { FirstName = "Tim", LastName = "Hymi", Email = "Hy3@email.com", BirthDate = new DateTime(1990, 2, 7) });
-                _repository.Save();
-            }
-          
+            _userService = userService;
         }
 
         [HttpGet]
         public ActionResult<IEnumerable<User>> Get()
         {   
-            var res = _repository.GetUserList();
+            var res = _userService.GetUserList();
             return res.ToList();
         }
 
         [HttpGet("{id}")]
         public ActionResult<User> Get(int id)
         {
-            User user = _repository.GetUser(id);
+            User user = _userService.GetUser(id);
             if (user == null)
                 return NotFound();
             return new ObjectResult(user);
@@ -47,8 +37,7 @@ namespace NinjaCore2.WebApi.Controllers
         {
             if (user == null)
                 return BadRequest();
-            _repository.Create(user);
-            _repository.Save();
+            _userService.Create(user);
             return Ok(user);
         }
 
@@ -57,21 +46,19 @@ namespace NinjaCore2.WebApi.Controllers
         {
             if (user == null)
                 return BadRequest();
-            if (!_repository.GetUserList().Any(x => x.Id == user.Id))
+            if (!_userService.GetUserList().Any(x => x.Id == user.Id))
                 return NotFound();
-            _repository.Update(user);
-            _repository.Save();            
+            _userService.Update(user);
             return Ok(user);
         }
 
         [HttpDelete("{id}")]
         public ActionResult<User> Delete(int id)
         {
-            User user = _repository.GetUser(id);            
+            User user = _userService.GetUser(id);            
             if (user == null)
                 return NotFound();
-            _repository.Delete(id);
-            _repository.Save();
+            _userService.Delete(id);
             return Ok(user);
         }
     }

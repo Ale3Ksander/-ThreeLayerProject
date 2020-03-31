@@ -1,16 +1,16 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using System.Collections.Generic;
+using Microsoft.EntityFrameworkCore;
 using NinjaCore2.Data.DataContext;
-using NinjaCore2.Data.Repositories;
-using NinjaCore2.Domain.Models;
-using System.Collections.Generic;
+using NinjaCore2.Data.Entities;
+using NinjaCore2.Data.Repositories.Abstract;
 
-namespace NinjaCore2.Data.Entities
+namespace NinjaCore2.Data.Repositories.Concrete
 {
     public class UserRepository : IUserRepository
     {
-        private UserContext context;
+        private ApplicationDataContext context;
 
-        public UserRepository(UserContext context)
+        public UserRepository(ApplicationDataContext context)
         {
             this.context = context;
         }
